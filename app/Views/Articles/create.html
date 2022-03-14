@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Friends App</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/users">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/articles">Articles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Logged in as: {{ user }} </a>
+                </li>
+                <li>
+                    <form action="/logout" method="post">
+                        <button type="submit" class="btn btn-secondary btn-lg" name="logout"> Log Out </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<section style="padding-top: 60px">
+    <div class="container p-5">
+
+<ul>
+    {% for error in errors %}
+    <li style="color:red"> {{ error[0] }}</li>
+    {% endfor %}
+</ul>
+        <h3>
+            Create an article
+        </h3>
+<form method="post" action="/articles">
+    <div>
+    <label for="title"> Title: </label>
+        <br>
+    <input type="text" id="title" name="title" value="{{inputs.title}}">
+    </div>
+    <div>
+        <label for="description"> Description: </label>
+        <br>
+        <textarea name="description" id="description" cols="60" rows="5">{{ inputs.description }}</textarea>
+        <br>
+        <button class="btn btn-secondary btn-sm" type="submit" > Create </button>
+    </div>
+</form>
+        <a href="/articles"> Back </a>
+    </div>
+</section>
+
+{% endblock %}

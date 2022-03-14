@@ -1,26 +1,114 @@
-<!doctype html>
+{% extends "layout.html" %}
+
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home</title>
+    <title>Users</title>
 </head>
 <body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Friends App</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/users">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/articles">Articles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Logged in as: {{ userName }} </a>
+                </li>
+                <li>
+                    <form action="/logout" method="post">
+                        <button type="submit" class="btn btn-secondary btn-lg" name="logout"> Log Out </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<section style="padding-top: 60px">
+    <div  class="container p-5">
+        <h3>List of registered users</h3>
 
-<h3>
-    Select an article
-</h3>
 <div>
-    <ul>
-        {% for items in data %}
-       <li><a href="users/{{items.id}}">{{ items.title }}</a></li>
-        {% endfor %}
-    </ul>
+    {% for user in users %}
+    {% if user.id != sessionId %}
+        <a href="users/{{user.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ user.name }} {{ user.surname }}</h5>
+                <p class="mb-1">{{ user.email }}</p>
+            </div>
+        </a>
+    {% endif %}
+    {% endfor %}
 </div>
 
 
+<div>
+   <h3 style="padding: 20px 0 20px 10px; border-top: solid 2px grey">Friends list:</h3>
+    <div>
+        {% for friend in friends %}
+            <a href="users/{{friend.user_id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ friend.name }} {{ friend.surname }}</h5>
+                    <p class="mb-1">{{ friend.email }}</p>
+                </div>
+            </a>
+            {% endfor %}
+
+
+    </div>
+</div>
+<div>
+    <h3 style="padding: 20px 0 20px 10px; border-top: solid 2px grey">Pending invites:</h3>
+
+    <div>
+
+            {% for invited in invitedFriends %}
+            <a href="users/{{invited.user_id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ invited.name }} {{ invited.surname }}</h5>
+                    <p class="mb-1">{{ invited.email }}</p>
+                </div>
+            </a>
+            {% endfor %}
+    </div>
+
+</div>
+
+<div>
+    <h3 style="padding: 20px 0 20px 10px; border-top: solid 2px grey">Friend requests:</h3>
+
+    <div class="list-group">
+            {% for request in friendRequests %}
+        <a href="users/{{request.user_id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ request.name }} {{ request.surname }}</h5>
+                <p class="mb-1">{{ request.email }}</p>
+            </div>
+        </a>
+            {% endfor %}
+    </div>
+
+
+
+</div>
+<div>
+    <a href="/">Back to home</a>
+</div>
+</div>
+</section>
 </body>
 </html>
-
+{% endblock %}

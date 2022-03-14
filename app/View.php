@@ -23,6 +23,5 @@ class View
     {
         return $this->data;
     }
-
 }
 

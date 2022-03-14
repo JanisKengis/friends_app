@@ -7,14 +7,18 @@ use PDOException;
 
 class ConnectToDB
 {
-    public function connect()
+    private static $connection = null;
+
+    public static function connect()
     {
-        try {
-            $pdo = new PDO('mysql:host=localhost;dbname=friendsapp', '', '');
-            return $pdo;
-        } catch (PDOException $e) {
-            print "Error!" . $e->getMessage() . "<br/>";
-            die();
+        if(self::$connection === null) {
+            try {
+                self::$connection = new PDO('mysql:host=localhost;dbname=friendsapp', 'phpadmin', '');
+            } catch (PDOException $e) {
+                print "Error!" . $e->getMessage() . "<br/>";
+                die();
+            }
         }
+        return self::$connection;
     }
 }

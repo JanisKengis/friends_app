@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{article.title}}</title>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Friends App</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/users">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/articles">Articles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Logged in as: {{ sessionUser }} </a>
+                </li>
+                <li>
+                    <form action="/logout" method="post">
+                        <button type="submit" class="btn btn-secondary btn-lg" name="logout"> Log Out </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section style="padding-top: 60px">
+    <div  class="container p-5">
+
+<h3>{{ article.title }} </h3>
+
+{% if sessionId == article.userId %}
+<small>(<a href="/articles/{{article.id}}/edit">Edit</a>)</small>
+{% endif %}
+
+<div>
+    <p style="border-bottom: solid 2px grey">{{article.description}}</p>
+</div>
+
+<div>
+    {% if sessionId == userLiked %}
+    <div>
+        <p>
+            Likes: {{ articleLikes }}
+        </p>
+        <p style="color:green">
+           <b>You liked this article</b>
+        </p>
+    </div>
+
+    <div>
+        <form method="post" action="/articles/{{article.id}}/dislike">
+            <button class="btn btn-danger" type="submit">Dislike</button>
+        </form>
+    </div>
+
+    {% else %}
+    <div>
+        <p>
+            Likes: {{ articleLikes }}
+        </p>
+    </div>
+    <div>
+        <form method="post" action="/articles/{{article.id}}/like">
+            <button class="btn btn-success" type="submit">Like</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+<div>
+    <p style="color:cornflowerblue">
+        <small>(Created by {{user}})</small>
+    </p>
+
+</div>
+
+<div>
+    <form action="/articles">
+        <button class="btn btn-secondary btn-sm" type="submit">Go Back</button>
+    </form>
+</div>
+
+
+<div style="padding: 20px 0 10px 10px">
+    <h3>Comments section:</h3>
+</div>
+<div>
+    <ul style="list-style-type: none">
+        {% for comment in comments %}
+        <li style="border-top: solid 2px gray" >
+                <h4> Commented by: {{ comment.author }}</h4>
+                <p>{{ comment.comment }}</p>
+                <p> Date: {{ comment.created_at }}</p>
+            <div>
+                {% if sessionId == comment.user_id %}
+                <form method ="post" action="/articles/{{article.id}}/comment/{{comment.id}}/deletecomment">
+                    <button type="submit" class="btn btn-secondary btn-sm" onclick="return confirm('Are You sure You want to delete this comment?');">Delete</button>
+                </form>
+                {% endif %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+<div>
+    <form method="post" action="/articles/{{article.id}}/comment">
+
+        <div>
+            <label for="comment"> Comment: </label>
+            <br>
+            <textarea name="comment" id="comment" cols="50" rows="3"></textarea>
+            <br>
+            <button class="btn btn-secondary btn-sm" type="submit" > Add comment </button>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</section>
+</body>
+</html>
+{% endblock %}

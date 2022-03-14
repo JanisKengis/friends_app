@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Homepage</title>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Friends App</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/users">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/articles">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Logged in as: {{ user }} </a>
+                    </li>
+                    <li>
+                    <form action="/logout" method="post">
+                        <button type="submit" class="btn btn-secondary btn-lg" name="logout"> Log Out </button>
+                    </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Full Page Image Header with Vertically Centered Content -->
+    <header class="masthead">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12 text-center">
+                    <h1 class="fw-light">Welcome to Friends App</h1>
+                    <p class="lead">Here You can find Your friends and read interesting articles</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="fw-light">To continue, please sign in or register, if You don't have an account</h2>
+            <div>
+                <h4>LOG IN</h4>
+                <form action="/users/login" method= "post">
+                    <input type="text" name="login_email" placeholder="E-mail">
+                    <input type="password" name="login_password" placeholder="Password">
+                    <button type="submit" class="btn btn-secondary btn-lg pl-2 " name="submit"> LOG IN </button>
+                </form>
+                <h3 style="padding: 20px 0 20px 0">Please provide details below to register an account</h3>
+                <form action="/users" method="post">
+                    <input type="text" name="email" placeholder="Email">
+                    <input type="password" name="password" placeholder="Password">
+                    <input type="password" name="pwd_repeat" placeholder="Repeat password">
+                    <input type="text" name="name" placeholder="Name">
+                    <input type="text" name="surname" placeholder="Surname">
+                    <input type="text" name="birthday" placeholder="Date of birth YYYY-MM-DD">
+                    <button type="submit" class="btn btn-secondary btn-lg pl-2 " name="submit"> SIGN UP </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
+{% endblock %}

@@ -3,15 +3,18 @@ namespace App\Models;
 
 class Article
 {
-    private string $id;
+
     private string $title;
     private string $description;
+    private ?string $id=null;
+    private ?string $userId=null;
 
-    public function __construct(string $id, string $title, string $description)
+    public function __construct(string $title, string $description, ?string $id=null, ?string $userId=null)
     {
         $this->id = $id;
         $this->title = $title;
         $this->description = $description;
+        $this->userId = $userId;
     }
 
     public function getId(): string
@@ -27,5 +30,10 @@ class Article
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    public function getUserId(): ?string
+    {
+        return $this->userId;
     }
 }

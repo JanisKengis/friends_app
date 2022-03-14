@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Friends App</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/users">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/articles">Articles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Logged in as: {{ user }} </a>
+                </li>
+                <li>
+                    <form action="/logout" method="post">
+                        <button type="submit" class="btn btn-secondary btn-lg" name="logout"> Log Out </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<section style="padding-top: 60px">
+<div  class="container p-5">
+<h3>
+    Select an article
+</h3>
+
+
+    <div class="list-group">
+        {% for items in data %}
+        <a href="articles/{{items.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ items.title }}</h5>
+                <small>
+                    {% if sessionId == items.userId %}
+                    <form method ="post" action="/articles/{{items.id}}/delete">
+                        <button class="btn btn-secondary btn-sm" type="submit" onclick="return confirm('Are You sure You want to delete this article?');">Delete</button>
+                    </form>
+                    {% endif %}
+                </small>
+            </div>
+            <p class="mb-1">{{ items.description }}</p>
+        </a>
+        {% endfor %}
+    </div>
+<div>
+    <div style="padding: 20px 0px 20px 10px">
+        <form action="/articles/create">
+            <button class="btn btn-secondary btn-lg" type="submit">Create Article</button>
+        </form>
+    </div>
+</div>
+</div>
+</section>
+</body>
+</html>
+{% endblock %}

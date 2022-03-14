@@ -1,23 +1,106 @@
-<!doctype html>
+{% extends "layout.html" %}
+
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{title}}</title>
+    <title>Users</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Friends App</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/users">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/articles">Articles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Logged in as: {{ name }} </a>
+                </li>
+                <li>
+                    <form action="/logout" method="post">
+                        <button type="submit" class="btn btn-secondary btn-lg" name="logout"> Log Out </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<section style="padding-top: 60px">
+    <div  class="container p-5">
 
-<h3>{{ title }} </h3>
+<h3>User Profile</h3>
 <div>
-    <p>{{description}}</p>
-</div>
 
+    <ul>
+        <li> First name: {{user.name}}</li>
+    </ul>
+    <ul>
+        <li> Last name: {{user.surname}}</li>
+    </ul>
+    <ul>
+        <li> E-mail address: {{user.email}}</li>
+    </ul>
+    <ul>
+        <li> Birthday: {{user.birthday}}</li>
+    </ul>
+    <ul>
+        <li> Registered at: {{user.createdAt}}</li>
+    </ul>
+
+
+    {% for friend in friends %}
+    {% if user.id == friend.friend_id %}
+    <h4> <b style="color:  green">You are friends already </b></h4>
+    {% endif %}
+    {% endfor %}
+
+    {% for invite in invites %}
+    {% if user.id == invite.friend_id %}
+    <h4> <b style="color:  orange">You have invited this person and waiting for response </b></h4>
+    {% endif %}
+    {% endfor %}
+
+
+    {% for request in requests %}
+    {% if user.id == request.user_id %}
+    <div style="display: inline-flex">
+        <div style="padding-right: 5px">
+    <form action="/users/{{user.id}}/accept" method="post">
+        <button  class="btn btn-success" type="submit"> Accept </button>
+    </form>
+        </div>
+    <form action="/users/{{user.id}}/decline" method="post">
+        <button class="btn btn-danger" type="submit"> Decline </button>
+    </form>
+    </div>
+    {% endif %}
+    {% endfor %}
+
+
+    <form action="/users/{{user.id}}/invite" method="post">
+        <button type="submit">Add Friend</button>
+    </form>
+
+
+</div>
 <div>
     <form action="/users">
         <button type="submit">Go Back</button>
     </form>
 </div>
+    </div>
+</section>
 </body>
 </html>
+{% endblock %}
